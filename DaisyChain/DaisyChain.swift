@@ -40,7 +40,7 @@ public class DaisyChain {
   /**
   Performs the block passed in parameter and waits until the DaisyChain is resumed.
   */
-  private func performAndWait(completion: () -> Void) {
+  public func performAndWait(completion: () -> Void) {
     dispatch_async(queue) {
       
       // If the chain is broken, we do not execute anything
@@ -56,9 +56,17 @@ public class DaisyChain {
   /**
    Resumes the previously waiting process.
    */
-  private func resume(completion: ((Bool) -> Void)?, finished: Bool) {
+  public func resume(completion: ((Bool) -> Void)?, finished: Bool) {
     completion?(finished)
     dispatch_semaphore_signal(semaphore)
+  }
+  
+  /**
+  Performs the block on our serial queue
+  */
+  public func perform(block: ()->Void){
+    performAndWait(block)
+    resume(nil, finished: true)
   }
   
   // MARK: Animating
