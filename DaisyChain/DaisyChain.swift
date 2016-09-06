@@ -65,8 +65,10 @@ public class DaisyChain {
   Performs the block on our serial queue
   */
   public func perform(block: ()->Void){
-    performAndWait(block)
-    resume(nil, finished: true)
+    performAndWait {
+        block()
+        self.resume(nil, finished: true)
+    }
   }
   
   // MARK: Animating
